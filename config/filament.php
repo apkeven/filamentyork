@@ -1,5 +1,7 @@
 <?php
 
+use App\Filament\Resources\EmployeeResource\Widgets\EmployeesStatsOverview;
+use App\Models\Employee;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Http\Middleware\MirrorConfigToSubpackages;
@@ -141,6 +143,7 @@ return [
         'register' => [
             Widgets\AccountWidget::class,
             Widgets\FilamentInfoWidget::class,
+            EmployeesStatsOverview::class,
         ],
     ],
 
@@ -237,7 +240,7 @@ return [
             'have_inline_labels' => false,
         ],
         'footer' => [
-            'should_show_logo' => true,
+            'should_show_logo' => false,
         ],
         'max_content_width' => null,
         'notifications' => [

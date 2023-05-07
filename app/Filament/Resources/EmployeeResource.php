@@ -23,11 +23,13 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\EmployeeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
+use App\Filament\Resources\EmployeeResource\Widgets\EmployeesStatsOverview;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
+    protected static ?string $navigationLabel = 'Empleados';
 
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
@@ -88,14 +90,18 @@ class EmployeeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->sortable(),
-                TextColumn::make('first_name')->searchable()->sortable(),
-                TextColumn::make('last_name')->searchable()->sortable(),
-                TextColumn::make('department.name')->sortable(),
-                TextColumn::make('phone_number')->searchable()->sortable(),
-                TextColumn::make('first_name')->searchable()->sortable(),
-                TextColumn::make('state.name')->sortable(),
-                TextColumn::make('birth_date')->dateTime(),
-                TextColumn::make('date_hired')->dateTime(),
+                TextColumn::make('first_name')->searchable()->sortable()->toggleable(),
+                TextColumn::make('last_name')->searchable()->sortable()->toggleable(),
+                TextColumn::make('state.name')->sortable()->toggleable(),
+                TextColumn::make('department.name')->sortable()->toggleable(),
+                TextColumn::make('phone_number')->searchable()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('date_hired')->dateTime()->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('birth_date')->dateTime()->toggleable(),
+                TextColumn::make('created_at')->searchable()->sortable()->toggleable(),
+                TextColumn::make('updated_at')->searchable()->sortable()->toggleable(isToggledHiddenByDefault: true),
+
+
+
 
             ])
             ->filters([
@@ -114,6 +120,13 @@ class EmployeeResource extends Resource
     {
         return [
             //
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            EmployeesStatsOverview::class,
         ];
     }
 
